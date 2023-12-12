@@ -61,7 +61,7 @@ export default function Navbar({ isScrolled }) {
             />
           </div>
           <button onClick={() => {
-            alert ("hello!");
+            alert ("Are you sure?");
             signOut(firebaseAuth);}
           }>
             <FaPowerOff />
