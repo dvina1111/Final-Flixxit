@@ -7,9 +7,9 @@ import styled from "styled-components";
 import BackgroundImage from '../components/BackgroundImage';
 import Header from '../components/Header';
 import { firebaseAuth} from '../utils/firebase-config';
-import { useNavigate } from 'react-router-dom';
-import Login from './Login';
-import Flixxit from './Flixxit'; 
+import { Link, useNavigate } from 'react-router-dom';
+//import Login from './Login';
+//import Flixxit from './Flixxit'; 
 
 
 export default function SignUp() {
@@ -25,17 +25,17 @@ export default function SignUp() {
         try {
           const { email, password } = formValues;
           await createUserWithEmailAndPassword(firebaseAuth, email, password);
-        } catch (err) {
-          console.log(err);
+        } catch (error) {
+          console.log(error.code);
         }
       };
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(firebaseAuth, (currentUser) => {
           if (currentUser) {
-            navigate("/Flixxit");
+            navigate('/Flixxit');
           }
-        });
+          });
         return () => {
             unsubscribe();
           };
@@ -43,6 +43,8 @@ export default function SignUp() {
   
     return (
       <Container $showPassword={showPassword}>
+        <Link to="/login">Already have an account? Login</Link>
+        <Link to="/Flixxit">Go to home</Link>
         <BackgroundImage />
         <div className="content">
           <Header login />
