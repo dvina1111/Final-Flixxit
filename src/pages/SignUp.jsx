@@ -61,7 +61,6 @@ export default function SignUp() {
               type="email"
               placeholder="Email address"
               name="email"
-              autocomplete="email"
               value={formValues.email}
               onChange={(e) =>
                 setFormValues({
@@ -75,7 +74,6 @@ export default function SignUp() {
                 type="password"
                 placeholder="Password"
                 name="password"
-                autocomplete="password"
                 value={formValues.password}
                 onChange={(e) =>
                   setFormValues({
