@@ -9,7 +9,7 @@ import Header from '../components/Header';
 import { firebaseAuth} from '../utils/firebase-config';
 import { Link, useNavigate } from 'react-router-dom';
 //import Login from './Login';
-//import Flixxit from './Flixxit'; 
+import Flixxit from './Flixxit'; 
 
 
 export default function SignUp() {
@@ -22,14 +22,17 @@ export default function SignUp() {
     
   
     const handleSignIn = async () => {
-        try {
-          const { email, password } = formValues;
-          await createUserWithEmailAndPassword(firebaseAuth, email, password);
-        } catch (error) {
-          console.log(error.code);
-        }
-      };
+    try {
+      const { email, password } = formValues;
+      await createUserWithEmailAndPassword(firebaseAuth, email, password);
 
+      // Navigate to the Flixxit page upon successful signup
+      navigate('/Flixxit');
+    } catch (error) {
+      console.log(error.code);
+    }
+  };
+    
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(firebaseAuth, (currentUser) => {
           if (currentUser) {
@@ -92,6 +95,7 @@ export default function SignUp() {
             {showPassword && <button onClick={handleSignIn}>Log In</button>}
           </div>
         </div>
+          <Flixxit />
       </Container>
     );
   }
