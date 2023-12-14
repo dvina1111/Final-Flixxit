@@ -1,51 +1,54 @@
-import {
-    createUserWithEmailAndPassword,
-    onAuthStateChanged,
-  } from "firebase/auth";
-import React,  {useEffect, useState} from 'react';
-import styled from "styled-components";
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
 import BackgroundImage from '../components/BackgroundImage';
 import Header from '../components/Header';
-import { firebaseAuth} from '../utils/firebase-config';
+import { createUserWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth'; // Import Firebase authentication methods
+import { firebaseAuth } from '../utils/firebase-config'; // firebase-config.js file exporting Firebase authentication instance
 import { Link, useNavigate } from 'react-router-dom';
-//import Login from './Login';
-//import Flixxit from './Flixxit'; 
-
 
 export default function SignUp() {
-    const [showPassword, setShowPassword] = useState(false);
-    const navigate = useNavigate();
-    const [formValues, setFormValues] = useState({
-      email: "",
-      password: "",
-    });
-    
-  
-    const handleSignIn = async () => {
-        try {
-          const { email, password } = formValues;
-          await createUserWithEmailAndPassword(firebaseAuth, email, password);
-        } catch (error) {
-          console.log(error.code);
-        }
-      };
+  const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+  const [formValues, setFormValues] = useState({
+    email: '',
+    password: '',
+  });
 
-    useEffect(() => {
-        const unsubscribe = onAuthStateChanged(firebaseAuth, (currentUser) => {
-          if (currentUser) {
-            navigate('/Flixxit');
-          }
-          });
-        return () => {
-            unsubscribe();
-          };
-        }, [navigate]);
-  
-    return (
-      <Container $showPassword={showPassword}>
-        <Link to="/login">Already have an account? Login</Link>
-        <Link to="/Flixxit">Go to home</Link>
-        <BackgroundImage />
+  const handleSignIn = async () => {
+    try {
+      const { email, password } = formValues;
+      await createUserWithEmailAndPassword(firebaseAuth, email, password);
+    } catch (error) {
+      console.error('Error creating user:', error); // Log the entire error object for better debugging
+    }
+  };
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(firebaseAuth, (currentUser) => {
+      if (currentUser) {
+        navigate('/Flixxit');
+      }
+    });
+
+    return () => {
+      unsubscribe(); // Unsubscribe from the auth state listener when the component unmounts
+    };
+  }, [navigate]);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormValues({
+      ...formValues,
+      [name]: value,
+    });
+  };
+
+  return (
+    <Container $showPassword={showPassword}>
+      <Link to="/login">Already have an account? Login</Link>
+      <Link to="/Flixxit">Go to home</Link>
+      {/* Your other JSX elements */}
+      <BackgroundImage />
         <div className="content">
           <Header login />
           <div className="body flex column a-center j-center">
@@ -56,45 +59,36 @@ export default function SignUp() {
                 Ready to watch? Enter your email to create or restart membership.
               </h6>
             </div>
-            <div className="form">
-              <input
-                type="email"
-                placeholder="Email address"
-                name="email"
-                value={formValues.email}
-                onChange={(e) =>
-                  setFormValues({
-                    ...formValues,
-                    [e.target.name]: e.target.value,
-                  })
-                }
-              />
-              {showPassword && (
-                <input
-                  type="password"
-                  placeholder="Password"
-                  name="password"
-                  value={formValues.password}
-                  onChange={(e) =>
-                    setFormValues({
-                      ...formValues,
-                      [e.target.name]: e.target.value,
-                    })
-                  }
-                 
-                  
-                />
-              )}
-              {!showPassword && (
-                <button onClick={() => setShowPassword(true)}>Get Started</button>
-              )}
-            </div>
-            {showPassword && <button onClick={handleSignIn}>Log In</button>}
-          </div>
-        </div>
-      </Container>
-    );
-  }
+      <div className="form">
+        <input
+          type="email"
+          placeholder="Email address"
+          name="email"
+          autoComplete="username" // Use 'username' for email fields
+          value={formValues.email}
+          onChange={handleInputChange}
+        />
+        {showPassword && (
+          <input
+            type="password"
+            placeholder="Password"
+            name="password"
+            autoComplete="current-password" // Use 'current-password' for password fields
+            value={formValues.password}
+            onChange={handleInputChange}
+          />
+        )}
+        {!showPassword && (
+          <button onClick={() => setShowPassword(true)}>Get Started</button>
+        )}
+      </div>
+      {showPassword && <button onClick={handleSignIn}>Sign Up</button>}
+      </div>
+      </div>
+    </Container>
+  );
+}
+
 
 const Container = styled.div`
   position: relative;
