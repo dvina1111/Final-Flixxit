@@ -17,8 +17,8 @@ import {
     const {
       data: { genres },
     } = await axios.get(
-     `${TMDB_BASE_URL}/genre/movie/list?api_key=${API_KEY}`);
-    return genres;
+    "https://api.themoviedb.org/3/genre/movie/list?api_key=9dfad1405f38a26b7e6012d5d8205aa3");
+        return genres;
   });
   
   const createArrayFromRawData = (array, moviesArray, genres) => {
