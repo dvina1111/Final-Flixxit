@@ -13,14 +13,15 @@ import {
     genres: [],
   };
   
-  export const getGenres = createAsyncThunk("netflix/genres", async () => {
-    const {
-      data: { genres },
-    } = await axios.get(
-    "https://api.themoviedb.org/3/genre/movie/list?api_key=9dfad1405f38a26b7e6012d5d8205aa3");
-        return genres;
-  });
-  
+ export const getGenres = createAsyncThunk("netflix/genres", async () => {
+  const {
+    data: { genres },
+  } = await axios.get(
+    "https://api.themoviedb.org/3/genre/movie/list?api_key=3d39d6bfe362592e6aa293f01fbcf9b9"
+  );
+  return genres;
+});
+
   const createArrayFromRawData = (array, moviesArray, genres) => {
     console.log(array);
     array.forEach((movie) => {
